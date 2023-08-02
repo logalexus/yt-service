@@ -6,5 +6,5 @@ app = Celery('tasks', broker=os.environ.get("CELERY_BROKER_URL"))
 
 
 @app.task(name="start_processing")
-def start_processing(video_id: str):
+def start_processing(video_url: str):
     pass

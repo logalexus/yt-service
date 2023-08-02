@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+    celery_fastapi:
+      build: ./src/xxx
+      command: celery -A tasks worker --loglevel=INFO
+      environment:
+        - CELERY_BROKER_URL=redis://redis_fastapi:6379/0
+        - CELERY_RESULT_BACKEND=redis://redis_fastapi:6379/0
+
+      depends_on:
+        - redis_fastapi
+
+    redis_fastapi:
+      image: redis:latest
+      ports:
+        - '6379:6379'

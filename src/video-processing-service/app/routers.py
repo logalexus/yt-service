@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from tasks import start_upload
+from tasks import start_processing
 from celery.result import AsyncResult
 
 router = APIRouter(
     prefix="/api/v1/processing",
-    tags=["upload"],
+    tags=["processing"],
 )
 
 
