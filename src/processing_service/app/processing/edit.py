@@ -3,6 +3,7 @@ from moviepy.editor import VideoFileClip
 from moviepy.video.fx.speedx import speedx
 
 import os
+import platform
 
 
 class VideoEditor():
@@ -22,8 +23,12 @@ class VideoEditor():
         if (save_path is None):
             save_path = temp_path
 
-        self.clip.write_videofile(str(save_path), preset="ultrafast",
-                                  fps=30, threads=1, codec="libx264", temp_audiofile=False)
+        self.clip.write_videofile(str(save_path),
+                                  preset="ultrafast",
+                                  fps=30,
+                                  threads=1,
+                                  codec="libx264",
+                                  temp_audiofile=False)
         self.clip.close()
 
         os.remove(self.video_path)
@@ -33,7 +38,7 @@ class VideoEditor():
 
 
 if __name__ == "__main__":
-    editor = VideoEditor(Path("src/shared/videos/video.mp4"))
+    editor = VideoEditor(Path("/shared/videos/video.mp4"))
     editor.cut(2, 2)
     editor.apply_effect(1.1)
     editor.render()

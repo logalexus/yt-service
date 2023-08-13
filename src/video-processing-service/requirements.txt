@@ -1,5 +1,0 @@
-fastapi
-uvicorn
-celery
-moviepy
-yt_dlp
