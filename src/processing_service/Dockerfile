@@ -1,13 +1,13 @@
-FROM python:3.10.6-slim-buster
+FROM python:3.10-alpine
 
-RUN apt-get update
-RUN apt-get install ffmpeg -y
+RUN apk update && \
+    apk add ffmpeg 
 
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY ./app ./
 

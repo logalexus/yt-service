@@ -1,8 +1,8 @@
 selenium==4.3.0
 webdriver-manager==3.7.1
 undetected_chromedriver
-fastapi
-uvicorn
-celery
-flower
-redis
+fastapi==0.100
+uvicorn==0.23.1
+celery==5.3.1
+flower==2.0.1
+redis==5.0.0
