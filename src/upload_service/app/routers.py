@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from tasks import start_upload
 from celery.result import AsyncResult
+from model import UploadModel
 
 router = APIRouter(
     prefix="/api/v1/upload",
@@ -20,7 +21,7 @@ async def get_result(task_id):
     return {"task_status": task_result.result}
 
 
-@router.post("/{video_id}")
-async def create_item(video_id: str):
-    task = start_upload.delay(video_id)
+@router.post("/")
+async def create_item(model: UploadModel):
+    task = start_upload.apply_async(args=[model.video_path], queue="upload")
     return {"task_id": task.id}

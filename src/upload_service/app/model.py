@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class VideoResponse(BaseModel):
-    url: str
+class UploadModel(BaseModel):
+    video_path: str

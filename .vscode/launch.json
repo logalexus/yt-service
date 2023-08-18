@@ -10,8 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "name": "Main",

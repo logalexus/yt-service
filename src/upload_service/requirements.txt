@@ -1,5 +1,4 @@
 selenium==4.3.0
-webdriver-manager==3.7.1
 undetected_chromedriver
 fastapi==0.100
 uvicorn==0.23.1

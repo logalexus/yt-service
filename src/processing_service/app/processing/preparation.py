@@ -55,7 +55,7 @@ class VideoPreparation():
 
         if video_path.exists():
             self.logger.info(f'Video already exists: {video_path}')
-            return video_path
+            return video_path, preview_path, info
 
         self.logger.info(f'Downloading: {url}')
         with yt_dlp.YoutubeDL(options) as ydl:
@@ -65,6 +65,6 @@ class VideoPreparation():
 
 
 if __name__ == "__main__":
-    url = "https://www.youtube.com/watch?v=xxx"
+    url = "https://www.youtube.com/watch?v=iIqkrqNLqw4"
     preparation = VideoPreparation(url)
     preparation.prepare()

@@ -5,3 +5,4 @@ moviepy==1.0.3
 yt_dlp==2023.7.6
 flower==2.0.1
 redis==5.0.0
+requests==2.31

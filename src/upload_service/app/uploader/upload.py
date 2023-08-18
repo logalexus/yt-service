@@ -3,15 +3,16 @@ import time
 import os
 import logging
 import undetected_chromedriver as webdriver
-import logger
+import uploader.logger
 
-from typing import DefaultDict, Optional, Tuple
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from typing import DefaultDict, Optional, Tuple
+from uploader.constant import Constant
 from collections import defaultdict
 from datetime import datetime
-from constant import Constant
 from pathlib import Path
 
 
@@ -25,22 +26,22 @@ class YouTubeUploader:
         self.video_path = video_path
         self.thumbnail_path = thumbnail_path
         self.metadata_dict = self.__load_metadata(metadata_json_path)
+        self.logger = logging.getLogger("YT")
         self.__init_browser()
         self.__inject_user_cookies()
         self.__inject_youtube_consent_cookie()
         self.__validate_inputs()
-        self.logger = logging.getLogger("YT")
 
     def __init_browser(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-gpu")
-        options.add_argument("--window-size=1920,1080")
         options.add_argument("--no-sandbox")
         options.add_argument('--disable-dev-shm-usage')
         options.page_load_strategy = "eager"
 
-        self.browser = webdriver.Chrome(options=options, headless=True)
+        self.browser = webdriver.Chrome(options=options, headless=True, version_main=114)
         self.browser.implicitly_wait(5)
+        self.wait = WebDriverWait(self.browser, 360)
 
     def upload(self):
         try:
@@ -117,17 +118,26 @@ class YouTubeUploader:
             self.browser.get(Constant.YOUTUBE_UPLOAD_URL)
             time.sleep(Constant.USER_WAITING_TIME)
             absolute_video_path = str(Path.cwd() / self.video_path)
-            print(os.path.exists(absolute_video_path))
+
+            self.logger.debug('Finding file input')
+            
+            # self.wait.until(EC.element_to_be_clickable((By.XPATH, Constant.INPUT_FILE_VIDEO))).send_keys(
+            #      absolute_video_path)
+
             self.browser.find_element(By.XPATH, Constant.INPUT_FILE_VIDEO).send_keys(
                 absolute_video_path)
+
             self.logger.debug('Attached video {}'.format(self.video_path))
 
-            # find_element status container
-            uploading_status_container = None
-            while uploading_status_container is None:
-                time.sleep(Constant.USER_WAITING_TIME)
-                uploading_status_container = self.browser.find_element(
-                    By.XPATH, Constant.UPLOADING_STATUS_CONTAINER)
+            try:
+                # find_element status container
+                uploading_status_container = None
+                while uploading_status_container is None:
+                    time.sleep(Constant.USER_WAITING_TIME)
+                    uploading_status_container = self.browser.find_element(
+                        By.XPATH, Constant.UPLOADING_STATUS_CONTAINER)
+            except Exception:
+                self.logger.debug('Not found status container. Perhaps video uploaded immediately')
 
         if self.thumbnail_path is not None:
             absolute_thumbnail_path = str(Path.cwd() / self.thumbnail_path)
@@ -135,8 +145,7 @@ class YouTubeUploader:
                 absolute_thumbnail_path)
             change_display = "document.getElementById('file-loader').style = 'display: block! important'"
             self.browser.driver.execute_script(change_display)
-            self.logger.debug(
-                'Attached thumbnail {}'.format(self.thumbnail_path))
+            self.logger.debug('Attached thumbnail {}'.format(self.thumbnail_path))
 
         title_field, description_field = self.browser.find_elements(
             By.ID, Constant.TEXTBOX_ID)
@@ -301,3 +310,8 @@ class YouTubeUploader:
 
     def __quit(self):
         self.browser.quit()
+
+
+if __name__ == "__main__":
+    uploader = YouTubeUploader("shared/videos/xxx.mp4")
+    uploader.upload()

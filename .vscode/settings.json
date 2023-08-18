@@ -2,12 +2,12 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
     },
-    "python.formatting.provider": "none",
     "python.envFile": "${workspaceFolder}/.env",
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}/src/processing_service/app"
+        "PYTHONPATH": "${workspaceFolder}/src/processing_service/app;${workspaceFolder}/src/upload_service/app"
     },
     "conventionalCommits.scopes": [
-        "processing"
+        "processing",
+        "upload"
     ]
 }
