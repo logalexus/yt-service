@@ -1,16 +1,15 @@
 import json
 import time
-import os
 import logging
 import undetected_chromedriver as webdriver
-import uploader.logger
+import app.uploader.logger
 
+from app.uploader.constant import Constant
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from typing import DefaultDict, Optional, Tuple
-from uploader.constant import Constant
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -57,7 +56,7 @@ class YouTubeUploader:
             return defaultdict(str, json.load(metadata_json_file))
 
     def __inject_user_cookies(self) -> None:
-        with open("data/cookie.json", "r") as cookies_json:
+        with open("app/data/cookie.json", "r") as cookies_json:
             cookies = json.load(cookies_json)
 
         self.browser.get(Constant.YOUTUBE_URL)
