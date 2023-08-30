@@ -12,12 +12,17 @@
             "name": "upload-service",
             "path": "../src/upload_service"
         },
+        {
+            "name": "backend",
+            "path": "../src/backend"
+        },
     ],
     "settings": {
         "python.envFile": "${workspaceFolder}/.env",
         "conventionalCommits.scopes": [
             "processing",
-            "upload"
+            "upload",
+            "backend"
         ]
     }
     
